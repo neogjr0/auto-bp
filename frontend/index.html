@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 자동 블로그 시스템</title>
+</head>
+<body>
+  <h2>AI 블로그 글 생성</h2>
+  <input id="keyword" type="text" placeholder="키워드 입력">
+  <button onclick="generate()">생성하기</button>
+
+  <h3>결과</h3>
+  <div id="result"></div>
+
+  <script>
+    async function generate() {
+      const keyword = document.getElementById("keyword").value;
+
+      const res = await fetch("http://localhost:3001/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input: keyword }),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById("result").innerText = "오류: " + data.error;
+        return;
+      }
+
+      document.getElementById("result").innerText = "파일 생성됨: " + data.file;
+    }
+  </script>
+</body>
+</html>
